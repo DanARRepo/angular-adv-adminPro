@@ -1,12 +1,14 @@
+import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from 'src/environments/environment.prod';
 import { Observable, catchError, map, of, tap } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 import { RegisterForm } from '../interfaces/register-form.interface';
 import { LoginForm } from '../interfaces/login-form.interface';
-import { Router } from '@angular/router';
+
 import { User } from '../models/user.model';
+import { LoadUser } from '../interfaces/load-users.interface';
 
 const base_url = environment.base_url;
 declare const google: any;
@@ -29,6 +31,14 @@ export class UserService {
 
   get uid(): string {
     return this.user.uid || '';
+  }
+
+  get headers() {
+    return {
+      headers: {
+        'x-token': this.token
+      }
+    }
   }
 
   validateToken(): Observable<boolean> {
@@ -59,17 +69,11 @@ export class UserService {
   }
 
   updateUser(data: { email: string, name: string, role: string }) {
-
     data = {
       ...data,
       role: this.user.role!
     }
-
-    return this.http.put(`${base_url}/users/${this.uid}`, data, {
-      headers: {
-        'x-token': this.token
-      }
-    });
+    return this.http.put(`${base_url}/users/${this.uid}`, data, this.headers);
   }
 
   login(formData: LoginForm) {
@@ -99,6 +103,33 @@ export class UserService {
         this.router.navigateByUrl('/login');
       });
     }
+  }
+
+  loadUsers( from:number = 0 ) {
+    const url = `${base_url}/users?from=${from}`;
+
+    return this.http.get<LoadUser>( url, this.headers )
+      .pipe(
+        map( resp => {
+          const users = resp.users.map(
+            user => new User(user.name, user.email, '', user.image, user.google, user.role, user.uid)
+          );
+
+          return {
+            total: resp.total,
+            users
+          };
+        })
+      );
+  }
+
+  deleteUser( user:User ) {
+    const url = `${base_url}/users/${user.uid}`;
+    return this.http.delete( url, this.headers );
+  }
+
+  saveUser( user:User ) {
+    return this.http.put(`${base_url}/users/${user.uid}`, user, this.headers);
   }
 
 }
