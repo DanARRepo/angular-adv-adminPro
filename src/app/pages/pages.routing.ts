@@ -14,6 +14,9 @@ import { ProfileComponent } from './profile/profile.component';
 
 // Maintenance
 import { UsersComponent } from './maintenance/users/users.component';
+import { HospitalsComponent } from './maintenance/hospitals/hospitals.component';
+import { DoctorsComponent } from './maintenance/doctors/doctors.component';
+import { DoctorComponent } from './maintenance/doctors/doctor.component';
 
 const routes: Routes = [
     {
@@ -22,15 +25,18 @@ const routes: Routes = [
         canActivate: [ authGuard ],
         children: [
             { path: '', component: DahsboardComponent, data: { title: 'Dashboard' } },
-            { path: 'progress', component: ProgressComponent, data: { title: 'ProgressBar' } },
-            { path: 'grafica1', component: Grafica1Component, data: { title: 'Grafica #1' } },
             { path: 'account-settings', component: AccountSettingsComponent, data: { title: 'Temas' } },
+            { path: 'grafica1', component: Grafica1Component, data: { title: 'Grafica #1' } },
+            { path: 'profile', component: ProfileComponent, data: { title: 'User profile' } },
+            { path: 'progress', component: ProgressComponent, data: { title: 'ProgressBar' } },
             { path: 'promises', component: PromisesComponent, data: { title: 'Promesas' } },
             { path: 'rxjs', component: RxjsComponent, data: { title: 'RxJs' } },
-            { path: 'profile', component: ProfileComponent, data: { title: 'User profile' } },
             
             // Maintenance
-            { path: 'users', component: UsersComponent, data: { title: 'App user' } },
+            { path: 'doctors', component: DoctorsComponent, data: { title: 'Doctors Maintenance' } },
+            { path: 'doctor/:id', component: DoctorComponent, data: { title: 'Doctor Maintenance' } },
+            { path: 'hospitals', component: HospitalsComponent, data: { title: 'Hospitals Maintenance' } },
+            { path: 'users', component: UsersComponent, data: { title: 'Users Maintenance' } },
 
         ]
     },

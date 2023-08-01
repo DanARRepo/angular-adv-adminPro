@@ -75,7 +75,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     }
 
     this.searchService.search( 'users', terms ).subscribe({
-      next: (results) => {
+      next: (results:any) => {
         this.tableUsers = results;
       }
     })
@@ -116,7 +116,6 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   openModal( user:User ) {
-    console.log(user);
     this.modalImageService.openModal('users', user.uid!, user.image );
   }
 

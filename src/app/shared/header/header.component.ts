@@ -22,4 +22,9 @@ export class HeaderComponent {
     this.userService.logout();
   }
 
+  search( value:string ) {
+    console.log(value);
+    
+  }
+
 }

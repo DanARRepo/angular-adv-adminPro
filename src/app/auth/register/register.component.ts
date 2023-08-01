@@ -33,7 +33,6 @@ export class RegisterComponent {
 
   createUser() {
     this.formSubmitted = true;
-    console.log( this.registerForm );
 
     if (this.registerForm.invalid) return;
 

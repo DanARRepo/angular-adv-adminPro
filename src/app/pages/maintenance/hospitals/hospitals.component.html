@@ -1,0 +1,77 @@
+<div class="row animated fadeIn fast">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <input class="form-control" type="text" placeholder="Search hospital..." #txtTerm (keyup)="searchTerms(txtTerm.value)">
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row animated fadeIn fast" *ngIf="loading">
+    <div class="col-12">
+
+        <div class="alert alert-info text-center">
+            <h4 class="alert-heading">Loading</h4>
+            <i class="fa fa-spin fa-refresh fa-2x"></i>
+            <p class="mb-0">Please wait</p>
+        </div>
+
+    </div>
+</div>
+
+<div class="row" *ngIf="!loading">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="card-title">Hospitals - ({{ hospitals.length }})</h4>
+                        <h6 class="card-subtitle">Hospitals registered in the app</h6>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary" (click)="openSweetModal()">
+                            <i class="fa fa-hospital-o"></i>
+                            Create Hospital
+                        </button>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="w100">Image</th>
+                                <th>Name</th>
+                                <th class="w100 text-nowrap">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let hospital of hospitals">
+                                <td class="text-center">
+                                    <img class="avatar cursor" (click)="openModal(hospital)" [src]="hospital.image! | image: 'hospitals'" [alt]="hospital.name">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" placeholder="Hospital name" [(ngModel)]="hospital.name">
+                                </td>
+
+                                <td class="text-nowrap text-center">
+                                    <a class="cursor" (click)="savechanges(hospital)" data-toggle="tooltip" data-original-title="Save changes"> 
+                                        <i class="fa fa-pencil text-inverse m-r-10"></i> 
+                                    </a>
+                                    <a class="cursor" (click)="deleteHospital(hospital)" data-toggle="tooltip" data-original-title="Delete"> 
+                                        <i class="fa fa-close text-danger"></i> 
+                                    </a>
+                                </td>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- <button class="btn btn-secondary">Pevius</button>
+                &nbsp;
+                <button class="btn btn-secondary">Next</button> -->
+            </div>
+        </div>
+    </div>
+</div>
