@@ -17,6 +17,8 @@ import { UsersComponent } from './maintenance/users/users.component';
 import { HospitalsComponent } from './maintenance/hospitals/hospitals.component';
 import { DoctorsComponent } from './maintenance/doctors/doctors.component';
 import { DoctorComponent } from './maintenance/doctors/doctor.component';
+import { SearchComponent } from './search/search.component';
+import { adminGuard } from '../guards/admin.guard';
 
 const routes: Routes = [
     {
@@ -31,12 +33,15 @@ const routes: Routes = [
             { path: 'progress', component: ProgressComponent, data: { title: 'ProgressBar' } },
             { path: 'promises', component: PromisesComponent, data: { title: 'Promesas' } },
             { path: 'rxjs', component: RxjsComponent, data: { title: 'RxJs' } },
+            { path: 'search/:term', component: SearchComponent, data: { title: 'Searches' } },
             
             // Maintenance
             { path: 'doctors', component: DoctorsComponent, data: { title: 'Doctors Maintenance' } },
             { path: 'doctor/:id', component: DoctorComponent, data: { title: 'Doctor Maintenance' } },
             { path: 'hospitals', component: HospitalsComponent, data: { title: 'Hospitals Maintenance' } },
-            { path: 'users', component: UsersComponent, data: { title: 'Users Maintenance' } },
+
+            // Admin routes
+            { path: 'users', canActivate:[adminGuard], component: UsersComponent, data: { title: 'Users Maintenance' } },
 
         ]
     },

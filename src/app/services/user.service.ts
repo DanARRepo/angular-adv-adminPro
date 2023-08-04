@@ -33,12 +33,21 @@ export class UserService {
     return this.user.uid || '';
   }
 
+  get role(): 'ADMIN_ROLE' | 'USER_ROLE' {
+    return this.user.role!;
+  }
+
   get headers() {
     return {
       headers: {
         'x-token': this.token
       }
     }
+  }
+
+  saveLocalStorage( token:string, menu:any ) {
+    localStorage.setItem('token', token);
+    localStorage.setItem('menu', JSON.stringify(menu));
   }
 
   validateToken(): Observable<boolean> {
@@ -52,7 +61,7 @@ export class UserService {
         const { email, google, name, role, image = '', uid } = resp.user;
 
         this.user = new User(name, email, '', image, google, role, uid);
-        localStorage.setItem('token', resp.token);
+        this.saveLocalStorage(resp.token, resp.menu);
         return true;
       }),
       catchError(err => of(false))
@@ -62,9 +71,7 @@ export class UserService {
   createUser(formData: RegisterForm) {
     return this.http.post(`${base_url}/users`, formData)
       .pipe(
-        tap((resp: any) => {
-          localStorage.setItem('token', resp.token);
-        })
+        tap((resp: any) => this.saveLocalStorage(resp.token, resp.menu))
       );
   }
 
@@ -79,23 +86,23 @@ export class UserService {
   login(formData: LoginForm) {
     return this.http.post(`${base_url}/login`, formData)
       .pipe(
-        tap((resp: any) => {
-          localStorage.setItem('token', resp.token);
-        })
+        tap((resp: any) => this.saveLocalStorage(resp.token, resp.menu))
       );
   }
 
   loginGoogle(token: string) {
     return this.http.post(`${base_url}/login/google`, { token })
       .pipe(
-        tap((resp: any) => {
-          localStorage.setItem('token', resp.token);
-        })
+        tap((resp: any) => this.saveLocalStorage(resp.token, resp.menu))
       );
   }
 
   logout() {
     localStorage.removeItem('token');
+
+    // TODO: Delete menu
+    localStorage.removeItem('menu');
+
     this.router.navigateByUrl('/login');
 
     if ( this.user.google ) {
