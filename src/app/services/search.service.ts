@@ -6,7 +6,7 @@ import { User } from '../models/user.model';
 import { Hospital } from '../models/hospital.model';
 import { Doctor } from '../models/doctor.model';
 
-const base_url = environment.base_url;
+const base_url = (environment.production) ? environment.prod_url : environment.dev_url;
 
 @Injectable({
   providedIn: 'root'

@@ -4,7 +4,7 @@ import { environment } from 'src/environments/environment';
 import { map } from 'rxjs';
 import { Hospital } from '../models/hospital.model';
 
-const base_url = environment.base_url;
+const base_url = (environment.production) ? environment.prod_url : environment.dev_url;
 
 @Injectable({
   providedIn: 'root'

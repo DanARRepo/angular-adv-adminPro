@@ -10,7 +10,7 @@ import { LoginForm } from '../interfaces/login-form.interface';
 import { User } from '../models/user.model';
 import { LoadUser } from '../interfaces/load-users.interface';
 
-const base_url = environment.base_url;
+const base_url = (environment.production) ? environment.prod_url : environment.dev_url;
 declare const google: any;
 
 @Injectable({

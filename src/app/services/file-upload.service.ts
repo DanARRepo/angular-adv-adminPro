@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
-const base_url = environment.base_url
+const base_url = (environment.production) ? environment.prod_url : environment.dev_url;
 
 @Injectable({
   providedIn: 'root'
